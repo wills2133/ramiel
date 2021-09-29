@@ -36,7 +36,7 @@ namespace Mango.Web
                 options.DefaultScheme = "Cookies";
                 options.DefaultChallengeScheme = "oidc";
             })
-                .AddCookie("cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(10))
+                .AddCookie("Cookies", c => c.ExpireTimeSpan = TimeSpan.FromMinutes(10))
                 .AddOpenIdConnect("oidc", options =>
                 {
                     options.Authority = Configuration["ServiceUrls:IdentityAPI"];
