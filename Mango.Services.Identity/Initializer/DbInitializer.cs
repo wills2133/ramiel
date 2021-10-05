@@ -1,4 +1,5 @@
 ﻿using IdentityModel;
+using Mango.Services.Identity.DbContexts;
 using Mango.Services.Identity.Models;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -7,7 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 
-namespace Mango.Services.Identity.DbContexts.Initializer
+namespace Mango.Services.Identity.Initializer
 {
     public class DbInitializer : IDbInitializer
     {

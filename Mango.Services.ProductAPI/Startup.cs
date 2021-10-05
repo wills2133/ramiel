@@ -44,7 +44,7 @@ namespace Mango.Services.ProductAPI
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
-                    options.Authority = "https://localhost:44355/";
+                    options.Authority = "https://localhost:44384/";
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateAudience = false
@@ -107,6 +107,8 @@ namespace Mango.Services.ProductAPI
             app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 
