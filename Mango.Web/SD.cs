@@ -8,6 +8,7 @@ namespace Mango.Web
     public static class SD
     {
         public static string ProductAPIbase { get; set; }
+        public static string ShoppingCartAPIBase { get; set; }
         public enum ApiType
         {
             GET,
