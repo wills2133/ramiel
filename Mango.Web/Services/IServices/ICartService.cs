@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Mango.Web.Services.IServices
 {
-    interface ICartService
+    public interface ICartService
     {
         Task<T> GetCartByUserIdAsync<T>(string userId, string token = null);
         Task<T> AddToCartAsync<T>(CartDto cartDto, string token = null);
