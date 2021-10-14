@@ -1,5 +1,6 @@
 ﻿using Mango.Services.CouponAPI.Models.Dto;
 using Mango.Services.CouponAPI.Respository;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,7 @@ namespace Mango.Services.CouponAPI.Controllers
         {
             try
             {
+                var accessToken = await HttpContext.GetTokenAsync("access_token");
                 var coupon = await _couponRepository.GetCouponByCode(code);
                 _response.Result = coupon;
             }
