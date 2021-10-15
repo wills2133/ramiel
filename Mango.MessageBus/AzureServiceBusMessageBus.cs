@@ -1,4 +1,4 @@
-﻿using Microsoft.Azure.ServiceBus.Core;
+﻿using Azure.Messaging.ServiceBus;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -14,15 +14,18 @@ namespace Mango.MessageBus
         private string connectionString = "Endpoint=sb://mangorestaurant2133.servicebus.windows.net/;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=hUW/G/olocyOrVxciIQQe/vIr5rnfhGP8n2yW+jOBL8=";
         public async Task PublishMessage(BaseMessage message, string topicName)
         {
-            ISenderClient senderClient = new TopicClient(connectionString, topicName);
+            await using var client = new ServiceBusClient(connectionString);
+
+            ServiceBusSender sender = client.CreateSender(topicName);
+
             var jsonMessage = JsonConvert.SerializeObject(message);
-            var finalMessage = new Message(Encoding.UTF8.GetBytes(jsonMessage))
+            ServiceBusMessage finalMessage = new ServiceBusMessage(Encoding.UTF8.GetBytes(jsonMessage))
             {
                 CorrelationId = Guid.NewGuid().ToString()
             };
 
-            await senderClient.SendAsync(finalMessage);
-            await senderClient.CloseAsync();
+            await sender.SendMessageAsync(finalMessage);
+            await client.DisposeAsync();
         }
     }
 }
