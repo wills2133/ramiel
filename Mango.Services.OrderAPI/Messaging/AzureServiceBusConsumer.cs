@@ -12,12 +12,14 @@ using System.Threading.Tasks;
 
 namespace Mango.Services.OrderAPI.Messaging
 {
-    public class AzureServiceBusConsumer
+    public class AzureServiceBusConsumer : IAzureServiceBusConsumer
     {
         private readonly OrderRepository _orderRepository;
         private readonly string servicBusConnectonString;
-        private readonly string subscriptonName;
+        private readonly string subscriptonCheckOut;
         private readonly string checkoutMessageTopic;
+
+        private ServiceBusProcessor checkOutProcessor; // read message bus message
 
         private readonly IConfiguration _configuration;
 
@@ -27,10 +29,32 @@ namespace Mango.Services.OrderAPI.Messaging
             _configuration = configuration;
 
             servicBusConnectonString = _configuration.GetValue<string>("ServiceBusConnectionString");
-            subscriptonName = _configuration.GetValue<string>("SubscriptionName");
+            subscriptonCheckOut = _configuration.GetValue<string>("SubscriptonCheckOut");
             checkoutMessageTopic = _configuration.GetValue<string>("CheckoutMessageTopic");
+
+            var client = new ServiceBusClient(servicBusConnectonString);
+
+            checkOutProcessor = client.CreateProcessor(checkoutMessageTopic, subscriptonCheckOut);
         }
 
+        public async Task Start()
+        {
+            checkOutProcessor.ProcessMessageAsync += OnCheckOutMessageReceived;
+            checkOutProcessor.ProcessErrorAsync += ErrorHandler;
+            await checkOutProcessor.StartProcessingAsync();
+        }
+
+        Task ErrorHandler(ProcessErrorEventArgs args)
+        {
+            Console.WriteLine(args.Exception.ToString());
+            return Task.CompletedTask;
+        }
+
+        public async Task Stop()
+        {
+            await checkOutProcessor.StartProcessingAsync();
+            await checkOutProcessor.DisposeAsync();
+        }
         private async Task OnCheckOutMessageReceived(ProcessMessageEventArgs args)
         {
             var message = args.Message;
