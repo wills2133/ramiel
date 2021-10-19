@@ -76,8 +76,8 @@ namespace Mango.Services.ShoppingCartAPI.Repository
                 //if header is not null
                 //check if details has same product
                 var CartDetailsFromDb = await _db.CartDetails.AsNoTracking().FirstOrDefaultAsync(u =>
-                u.ProductId == cart.CartDetails.FirstOrDefault().ProductId
-                && u.CartHeaderId == cartHeaderFromDb.CartHeaderId);
+                    u.ProductId == cart.CartDetails.FirstOrDefault().ProductId
+                    && u.CartHeaderId == cartHeaderFromDb.CartHeaderId);
 
                 if (CartDetailsFromDb == null)
                 {
@@ -92,6 +92,8 @@ namespace Mango.Services.ShoppingCartAPI.Repository
                     // update the count/cart details
                     cart.CartDetails.FirstOrDefault().Product = null;
                     cart.CartDetails.FirstOrDefault().Count += CartDetailsFromDb.Count;
+                    cart.CartDetails.FirstOrDefault().CartDetailsId = CartDetailsFromDb.CartDetailsId;
+                    cart.CartDetails.FirstOrDefault().CartHeaderId = CartDetailsFromDb.CartHeaderId;
                     _db.CartDetails.Update(cart.CartDetails.FirstOrDefault());
                     await _db.SaveChangesAsync();
                 }
