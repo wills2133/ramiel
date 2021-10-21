@@ -3,6 +3,7 @@ using Mango.MessageBus;
 using Mango.Services.OrderAPI.Messages;
 using Mango.Services.OrderAPI.Models;
 using Mango.Services.OrderAPI.Repository;
+using Mango.Services.PaymentAPI.Messages;
 using Microsoft.Extensions.Configuration;
 using Newtonsoft.Json;
 using System;
