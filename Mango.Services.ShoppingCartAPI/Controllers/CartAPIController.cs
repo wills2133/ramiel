@@ -1,4 +1,4 @@
-﻿using Mango.MessageBus;
+﻿ using Mango.MessageBus;
 using Mango.Services.ShoppingCartAPI.Messages;
 using Mango.Services.ShoppingCartAPI.Models.Dto;
 using Mango.Services.ShoppingCartAPI.Repository;
@@ -147,6 +147,7 @@ namespace Mango.Services.ShoppingCartAPI.Controllers
                 checkoutHeaderDto.CartDetails = cartDto.CartDetails;
                 // logic to add message to process order
                 await _messageBus.PublishMessage(checkoutHeaderDto, "checkoutmessagetopic");
+                await _cartRepository.ClearCart(checkoutHeaderDto.UserId);
             }
             catch (Exception ex)
             {
