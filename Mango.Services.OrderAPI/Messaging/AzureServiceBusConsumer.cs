@@ -43,7 +43,7 @@ namespace Mango.Services.OrderAPI.Messaging
 
             var client = new ServiceBusClient(servicBusConnectonString);
 
-            checkOutProcessor = client.CreateProcessor(checkoutMessageTopic, subscriptonCheckOut);
+            checkOutProcessor = client.CreateProcessor(checkoutMessageTopic);
             orderUpdatePaymentStatusProcessor = client.CreateProcessor(orderUpdatePaymentResultTopic, subscriptonCheckOut);
         }
 
